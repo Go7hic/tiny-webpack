@@ -1,4 +1,5 @@
 #!/usr/bin/env node
 'use strict'
 
-require('./lib/cli')
+const compatRequire = require('node-compat-require')
+compatRequire('./lib', { node: '>= 8' })
