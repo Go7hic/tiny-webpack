@@ -1,5 +1,5 @@
-import express from "express";
-import manifest from "./build/manifest.json";
+const express = require("express");
+const manifest = require("./build/manifest.json");
 
 const app = express();
 

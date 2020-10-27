@@ -1,5 +1,5 @@
-import ast from "abstract-syntax-tree";
-import path from "path";
+const ast = require("abstract-syntax-tree");
+const path = require("path");
 
 /*
  * Template to be used for each module.
@@ -53,11 +53,11 @@ const buildRuntimeTemplateString = (allModules) => `
  */
 const getImport = (item, allDeps) => {
   // get variable we import onto
-  const importFunctionName = item.specifiers[0].imported.name;
+  // console.log(item.declarations[0].init.arguments[0].value);
+  const importFunctionName = item.declarations[0].id.name;
+  // console.log( 'allDeps',item.declarations[0].init.arguments[0])
   // get files full path and find index in deps array.
-  const fullFile = path.resolve("./src/", item.source.value);
-  const itemId = allDeps.findIndex((item) => item.name === fullFile);
-
+  const fullFile = path.resolve("./demo/", item.declarations[0].init.arguments[0].value);
   return {
     type: "VariableDeclaration",
     kind: "const",
@@ -115,11 +115,11 @@ const getExport = (item) => {
 const transform = (depsArray) => {
   const updatedModules = depsArray.reduce((acc, dependency, index) => {
     const updatedAst = dependency.source.body.map((item) => {
-      if (item.type === "ImportDeclaration") {
+      if (item.type === "VariableDeclaration") {
         // replace module imports with ours
         item = getImport(item, depsArray);
       }
-      if (item.type === "ExportNamedDeclaration") {
+      if (item.type === "ExpressionStatement") {
         // replaces function name with real exported function
         item = getExport(item);
       }
@@ -141,4 +141,7 @@ const transform = (depsArray) => {
 
   return bundleString;
 };
-export { transform };
+
+module.exports = {
+  transform
+}
