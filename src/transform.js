@@ -47,10 +47,7 @@ const buildRuntimeTemplateString = (allModules) => `
 ]);
 `;
 
-/*
- * Replacing ESM import with our function.
- *`const someImport = _ourRequire("{ID}");`
- */
+
 const getImport = (item, allDeps) => {
   // get variable we import onto
   // console.log(item.declarations[0].init.arguments[0].value);
@@ -86,10 +83,7 @@ const getImport = (item, allDeps) => {
   };
 };
 
-/*
- * Replacing ESM export with our function.
- * `module.exports = someFunction;`
- */
+
 const getExport = (item) => {
   // get export functions name
   const moduleName = item.specifiers[0].exported.name;
